@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Hello Rust</title>
+        <style>
+            .Head {
+                border: 2px solid black;
+                width: 40%;
+                height: inherit;
+                border-radius: 8px;
+                text-align: center;
+                margin: 5% auto auto;
+                padding: 10px;
+            }
+            .Text {
+                margin-bottom: 10px;
+            }
+            .Result {
+                border: 1px solid darkblue;
+                margin: 5% auto;
+            }
+            .UList {
+                list-style-type: none;
+            }
+            .List {
+                margin: 4px 2px;
+                border: 1px dashed black;
+                border-radius: 10%;
+                padding: 2px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="Head">
+            <label for="query" class="Text">
+                <h1>Provide Query</h1>
+            </label>
+            <div class="horizontal">
+                <input id="query" type="text"/>
+                <button id="query-btn">Submit</button>
+            </div>
+            <h3>Results: <span id="count">0</span></h3>
+        </div>
+        <div class="Result" id="result">
+        </div>
+        <script>
+            const query_btn = document.getElementById("query-btn");
+            const query = document.getElementById("query");
+            const response_count = document.getElementById("count");
+            const result_display = document.getElementById("result");
+            let response_paths = [];
+            query_btn.addEventListener("click", () => {
+                const q_value = query.value;
+                console.log(`Queried for ${q_value}`)
+                fetch("http://localhost:5000/api/search", {
+                    method: "POST",
+                    body: q_value
+                }).then((response) => {
+                    response.json().then((body) => {
+                        response_count.innerText = body?.count;
+                        response_paths = body?.results;
+                        const ul = document.createElement("ul");
+                        ul.className = "UList"
+                        response_paths.forEach((path, index) => {
+                            if (index > 10){
+                                return
+                            }
+                            const li_path = document.createElement("li");
+                            li_path.innerText = path
+                            li_path.className = "List"
+                            ul.appendChild(li_path)
+                        })
+                        result_display.appendChild(ul)
+                    })
+                })
+            })
+        </script>
+    </body>
+</html>
