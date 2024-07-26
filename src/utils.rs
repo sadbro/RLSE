@@ -188,7 +188,7 @@ pub(crate) fn serve_request(mut require: Request, tfidx: &TFIndex){
             serve_json(require, rank_table, 200).expect("[ERR]: API Result serve failed");
         }
         _ => {
-            serve_file(require, ["static", "404.html"].to_vec(), 404).expect("[ERR]: 404 Serve failed");
+            serve_file(require, vec!["static", "404.html"], 404).expect("[ERR]: 404 Serve failed");
         }
     }
 }

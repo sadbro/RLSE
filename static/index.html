@@ -58,8 +58,8 @@
                     body: q_value
                 }).then((response) => {
                     response.json().then((body) => {
-                        response_count.innerText = body?.count;
-                        response_paths = body?.results;
+                        response_count.innerText = body["count"] || 0;
+                        response_paths = body["results"] || [];
                         const ul = document.createElement("ul");
                         ul.className = "UList"
                         response_paths.forEach((path, index) => {
@@ -67,7 +67,7 @@
                                 return
                             }
                             const li_path = document.createElement("li");
-                            li_path.innerText = path
+                            li_path.innerText = path.toString()
                             li_path.className = "List"
                             ul.appendChild(li_path)
                         })
